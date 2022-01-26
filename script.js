@@ -25,10 +25,25 @@ let maxAge = 10;
 const startSpeed = 10;
 const endSpeed = 3;
 let best;
+let result;
 !localStorage.saves ? best = 0 : best = Math.max(...JSON.parse(localStorage.getItem('saves')));
 
+function startpack() {
+	let y = 200;
+	let x = getRandomInt(200);
+	let rnd = getRandomInt(9);
+	let step = 0;
+	let point = 0;
+	let age = 0;
+	let maxAge = 10;
+	const startSpeed = 10;
+	const endSpeed = 3;
+	let best;
+	let result;
+}
 backgroundImg.onload = function () {
 	game();
+	console.log('q');
 }
 
 canvas.addEventListener("mousedown", function(event) {
@@ -45,8 +60,14 @@ function getRandomInt(max) {
 
 function game() {
 	update();
-	render();
-	if(age != maxAge) requestAnimationFrame(game);
+	if(age != maxAge) {
+		render();
+		requestAnimationFrame(game);
+	}
+	if(result == true) {
+		result = false;
+		game();
+	}
 }
 
 function render() {
@@ -69,9 +90,9 @@ function update() {
 			saves.push(point);
 			updateLocal();
 			best = Math.max(...JSON.parse(localStorage.getItem('saves')));
-			alert('You Win');
+			result = confirm('Вы выйграли! Начать заново?');
 		} else {
-			if(age == maxAge) alert('Game Over');
+			if(age == maxAge) result = confirm('Вы прогиграли! Начать заново?');
 		}
 		if(step < endSpeed) step += 1;
 	}
